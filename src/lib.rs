@@ -61,7 +61,7 @@ impl F64Floor for f64 {
 /// * `bias` - Amount of change in Perlin noise. Used , for example, to make all Perlin noise values positive.
 ///
 /// Additional Info:
-/// http://libnoise.sourceforge.net/glossary/
+/// <http://libnoise.sourceforge.net/glossary/>
 #[derive(Copy, Clone)]
 pub struct PerlinNoise2D {
     octaves: i32,
