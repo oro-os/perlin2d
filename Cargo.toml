@@ -6,9 +6,11 @@ edition = "2018"
 license = "Apache-2.0"
 description = "Lightning fast 2D Perlin Noise generator"
 keywords = ["rand", "perlin"]
-categories = ["algorithms", "mathematics"]
+categories = ["algorithms", "mathematics", "no-std", "no-std::no-alloc"]
 readme = "./README.md"
 repository = "https://www.github.com/gp-97/perlin"
 
-
-[dependencies]
+[features]
+default = ["std"]
+std = []
+f64-floor-intrinsic = []

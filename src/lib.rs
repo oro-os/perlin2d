@@ -11,8 +11,41 @@
 //!
 //! let noise = perlin_obj.get_noise(5.0, 10.0);
 //! ```
+#![cfg_attr(not(feature = "std"), no_std)]
+#![cfg_attr(all(not(feature = "std"), feature = "f64-floor-intrinsic"), feature(core_intrinsics))]
 
-use std::num::Wrapping;
+use core::num::Wrapping;
+
+/// Re-implements floor for f64's in no_std environments
+#[cfg(not(feature = "std"))]
+trait F64Floor {
+    fn floor(self) -> f64;
+}
+
+/// Requires nightly.
+#[cfg(all(not(feature = "std"), feature = "f64-floor-intrinsic"))]
+impl F64Floor for f64 {
+    #[inline(always)]
+    fn floor(self) -> f64 {
+        unsafe { ::core::intrinsics::floorf64(self) }
+    }
+}
+
+#[cfg(all(not(feature = "std"), not(feature = "f64-floor-intrinsic")))]
+impl F64Floor for f64 {
+    fn floor(self) -> f64 {
+        let r = self % 1.0;
+        if self < 0.0 {
+            if r < 0.0 {
+                self - (1.0 + r)
+            } else {
+                self
+            }
+        } else {
+            self - r
+        }
+    }
+}
 
 /// Perlin Noise struct
 ///
